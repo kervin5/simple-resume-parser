@@ -1,0 +1,41 @@
+{
+  "name": "simple-resume-parser",
+  "version": "1.0",
+  "description": "A NodeJS library to parse pdf, txt, doc and docx files to JSON and CSV",
+  "main": "src/index.js",
+  "author": "Kervin Vasquez",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kervin5/simple-resume-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kervin5/simple-resume-parser/issues"
+  },
+  "homepage": "https://github.com/kervin5/simple-resume-parser",
+  "keywords": [
+    "resume",
+    "cv",
+    "parser",
+    "resume parser",
+    "cv parser",
+    "pdf parser"
+  ],
+  "scripts": {
+    "test": "node test.js",
+    "lint": "prettier --single-quote --trailing-comma es5 --write test.js src/*.js src/**/*.js src/**/**/*.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "mime": "^2.4.4",
+    "request": "^2.83.0",
+    "textract": "^2.2.0",
+    "tracer": "^0.8.11",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "prettier": "1.10.2"
+  }
+}
