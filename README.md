@@ -10,7 +10,7 @@ A Simple NodeJs library to parse Resume files in PDF, DOC, DOCX and TXT format t
 ## Usage
 
 ```
-const ResumeParser = require('resume-parser');
+const ResumeParser = require('simple-resume-parser');
 
 // From file
 const resume = new ResumeParser("./files/resume.doc");
