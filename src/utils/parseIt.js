@@ -1,53 +1,55 @@
-var ParseBoy = require('./ParseBoy');
-var processing = require('./libs/processing');
-var _ = require('underscore');
-var logger = require('tracer').colorConsole();
+var ParseBoy = require("./ParseBoy");
+var processing = require("./libs/processing");
+var logger = require("tracer").colorConsole();
 
 var parser = {
-  parseResumeFile: function(file, savePath, cbAfterParse) {
-    var objParseBoy = new ParseBoy(),
-      savedFiles = 0;
-
-    var onFileReady = function(preppedFile, error) {
-      if (error) {
-        return cbAfterParse(null, error);
-      }
-      objParseBoy.parseFile(preppedFile, function(Resume) {
-        logger.trace(
-          'I got Resume for ' + preppedFile.name + ', now saving...'
-        );
-
-        objParseBoy.storeResume(preppedFile, Resume, savePath, function(err) {
-          if (err) {
-            logger.error('Resume ' + preppedFile.name + ' errored', err);
-            return cbAfterParse(
-              null,
-              'Resume ' + preppedFile.name + ' errored'
-            );
-          }
-          logger.trace('Resume ' + preppedFile.name + ' saved');
-          return cbAfterParse(preppedFile.name);
-        });
-      });
-    };
-    processing.runFile(file, onFileReady);
+  parseToJSON: function(path, type, cbAfterParse) {
+    const objParseBoy = new ParseBoy();
+    if (type === "url") {
+      processing.runUrl(path, (preppedFile, error) =>
+        objParseBoy.parseUrl(preppedFile, cbAfterParse)
+      );
+    } else {
+      processing.runFile(path, (preppedFile, error) =>
+        objParseBoy.parseFile(preppedFile, cbAfterParse)
+      );
+    }
   },
-  parseResumeUrl: function(url, cbAfterParse) {
-    var objParseBoy = new ParseBoy();
-
-    var onUrlReady = function(preppedData, error) {
-      if (error) {
-        return cbAfterParse(null, error);
-      }
-      
-
-      objParseBoy.parseUrl(preppedData, function(Resume) {
-        logger.trace('I got Resume for ' + url + ', now sending...');
-        return cbAfterParse(Resume.parts);
+  parseToFile: function(path, type, savePath, cbAfterParse) {
+    const objParseBoy = new ParseBoy();
+    const storeFile = (preppedFile, Resume, savePath, cbAfterParse) => {
+      objParseBoy.storeResume(preppedFile, Resume, savePath, function(err) {
+        if (err) {
+          logger.error("Resume " + preppedFile.name + " errored", err);
+          return cbAfterParse(null, "Resume " + preppedFile.name + " errored");
+        }
+        logger.trace("Resume " + preppedFile.name + " saved");
+        return cbAfterParse(preppedFile.name);
       });
     };
 
-    processing.runUrl(url, onUrlReady);
-  },
+    if (type === "url") {
+      processing.runUrl(path, (preppedFile, error) => {
+        if (preppedFile) {
+          objParseBoy.parseUrl(preppedFile, resume =>
+            storeFile(
+              new processing.PreparedFile(path.split("/").pop(), preppedFile),
+              resume,
+              savePath,
+              cbAfterParse
+            )
+          );
+        }
+      });
+    } else {
+      processing.runFile(path, (preppedFile, error) => {
+        if (preppedFile) {
+          objParseBoy.parseFile(preppedFile, resume =>
+            storeFile(preppedFile, resume, savePath, cbAfterParse)
+          );
+        }
+      });
+    }
+  }
 };
 module.exports = parser;

@@ -1,8 +1,7 @@
-'use strict';
-const _ = require('underscore'),
-  processing = require('./libs/processing'),
-  parser = require('./libs/parser'),
-  logger = require('tracer').colorConsole();
+"use strict";
+const _ = require("underscore");
+const parser = require("./libs/parser");
+const logger = require("tracer").colorConsole();
 
 /**
  *
@@ -16,7 +15,7 @@ function ParseBoy() {}
  * @param cbGetResume
  */
 ParseBoy.prototype.parseFile = function(PreparedFile, cbGetResume) {
-  logger.trace('I\'m working with "' + PreparedFile.name + '" now');
+  logger.trace("I'm working with \"" + PreparedFile.name + '" now');
   parser.parse(PreparedFile, cbGetResume);
 };
 
@@ -24,7 +23,7 @@ ParseBoy.prototype.parseUrl = function(PreparedData, cbGetResume) {
   logger.trace("I'm working with file buffer now");
   parser.parse(
     {
-      raw: PreparedData,
+      raw: PreparedData
     },
     cbGetResume
   );
@@ -46,7 +45,7 @@ ParseBoy.prototype.storeResume = function(
   PreparedFile.addResume(Resume);
 
   if (!_.isFunction(cbOnSaved)) {
-    return logger.error('cbOnSaved should be a function');
+    return logger.error("cbOnSaved should be a function");
   }
   PreparedFile.saveResume(path, cbOnSaved);
 };

@@ -12,14 +12,17 @@ class ResumeParser {
     }
 
     this.path = filePath;
+    this.data = null;
   }
 
   parseToJSON() {
     return new Promise((resolve, reject) => {
-      parseIt.parseResumeUrl(this.path, function(file, error) {
+      if (this.data) return resolve(this.data);
+      parseIt.parseToJSON(this.path, this.type, (file, error) => {
         if (error) {
           return reject(error);
         }
+        this.data = file;
         return resolve(file);
       });
     });
@@ -27,10 +30,14 @@ class ResumeParser {
 
   parseToFile(outputPath) {
     return new Promise((resolve, reject) => {
-      parseIt.parseResumeFile(this.path, outputPath, function(file, error) {
+      if (!outputPath) {
+        reject("Missing ouput path");
+      }
+      parseIt.parseToFile(this.path, this.type, outputPath, (file, error) => {
         if (error) {
           return reject(error);
         }
+        this.data = file;
         return resolve(file);
       });
     });

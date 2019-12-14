@@ -1,23 +1,23 @@
-var _ = require('underscore'),
-  resume = require('../Resume'),
-  fs = require('fs'),
-  dictionary = require('../../dictionary.js'),
-  logger = require('tracer').colorConsole();
+var _ = require("underscore"),
+  resume = require("../Resume"),
+  fs = require("fs"),
+  dictionary = require("../../dictionary.js"),
+  logger = require("tracer").colorConsole();
 
 var profilesWatcher = {
   // for change value by reference
-  inProgress: 0,
+  inProgress: 0
 };
 
 module.exports = {
-  parse: parse,
+  parse: parse
 };
 
 function makeRegExpFromDictionary() {
   var regularRules = {
     titles: {},
     profiles: [],
-    inline: {},
+    inline: {}
   };
 
   _.forEach(dictionary.titles, function(titles, key) {
@@ -40,9 +40,9 @@ function makeRegExpFromDictionary() {
       profile = profile[0];
     }
     profileExpr =
-      '((?:https?://)?(?:www\\.)?' +
-      profile.replace('.', '\\.') +
-      '[/\\w \\.-]*)';
+      "((?:https?://)?(?:www\\.)?" +
+      profile.replace(".", "\\.") +
+      "[/\\w \\.-]*)";
     if (_.isFunction(profileHandler)) {
       regularRules.profiles.push([profileExpr, profileHandler]);
     } else {
@@ -51,7 +51,7 @@ function makeRegExpFromDictionary() {
   });
 
   _.forEach(dictionary.inline, function(expr, name) {
-    regularRules.inline[name] = expr + ':?[\\s]*(.*)';
+    regularRules.inline[name] = expr + ":?[\\s]*(.*)";
   });
 
   return _.extend(dictionary, regularRules);
@@ -63,7 +63,7 @@ makeRegExpFromDictionary();
 function parse(PreparedFile, cbReturnResume) {
   var rawFileData = PreparedFile.raw,
     Resume = new resume(),
-    rows = rawFileData.split('\n'),
+    rows = rawFileData.split("\n"),
     row;
 
   // save prepared file text (for debug)
@@ -97,7 +97,7 @@ function parse(PreparedFile, cbReturnResume) {
       }
     }, 200);
   } else {
-    return console.error('cbReturnResume should be a function');
+    return console.error("cbReturnResume should be a function");
   }
 }
 
@@ -116,7 +116,7 @@ function restoreTextByRows(rowNum, allRows) {
     rowNum++;
   } while (rowNum < allRows.length);
 
-  return rows.join('\n');
+  return rows.join("\n");
 }
 
 /**
@@ -125,7 +125,7 @@ function restoreTextByRows(rowNum, allRows) {
  * @returns {Number}
  */
 function countWords(str) {
-  return str.split(' ').length;
+  return str.split(" ").length;
 }
 
 /**
@@ -170,8 +170,8 @@ function parseDictionaryRegular(data, Resume) {
  * @param rowIdx
  */
 function parseDictionaryTitles(Resume, rows, rowIdx) {
-  var allTitles = _.flatten(_.toArray(dictionary.titles)).join('|'),
-    searchExpression = '',
+  var allTitles = _.flatten(_.toArray(dictionary.titles)).join("|"),
+    searchExpression = "",
     row = rows[rowIdx],
     ruleExpression,
     isRuleFound,
@@ -186,11 +186,11 @@ function parseDictionaryTitles(Resume, rows, rowIdx) {
         isRuleFound = ruleExpression.test(row);
 
         if (isRuleFound) {
-          allTitles = _.without(allTitles.split('|'), key).join('|');
+          allTitles = _.without(allTitles.split("|"), key).join("|");
           searchExpression =
-            '(?:' + expression + ')((.*\n)+?)(?:' + allTitles + '|{end})';
+            "(?:" + expression + ")((.*\n)+?)(?:" + allTitles + "|{end})";
           // restore remaining text to search in relevant part of text
-          result = new RegExp(searchExpression, 'gm').exec(
+          result = new RegExp(searchExpression, "gm").exec(
             restoreTextByRows(rowIdx, rows)
           );
 
@@ -225,8 +225,8 @@ function parseDictionaryProfiles(row, Resume) {
     }
     find = new RegExp(expression).exec(row);
     if (find) {
-      Resume.addKey('profiles', find[0] + '\n');
-      modifiedRow = row.replace(find[0], '');
+      Resume.addKey("profiles", find[0] + "\n");
+      modifiedRow = row.replace(find[0], "");
       if (_.isFunction(expressionHandler)) {
         profilesWatcher.inProgress++;
         expressionHandler(find[0], Resume, profilesWatcher);

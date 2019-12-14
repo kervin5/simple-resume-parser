@@ -8,7 +8,7 @@ const path = require("path"),
 
 module.exports.runFile = processFile;
 module.exports.runUrl = processUrl;
-
+module.exports.PreparedFile = PreparedFile;
 /**
  *
  * @param file

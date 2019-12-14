@@ -12,21 +12,26 @@ A Simple NodeJs library to parse Resume files in PDF, DOC, DOCX and TXT format t
 ```
 const ResumeParser = require('resume-parser');
 
-// From file to file
-ResumeParser
-  .parseResumeFile('./files/resume.doc', './files/compiled') // input file, output dir
-  .then(file => {
-    console.log("Yay! " + file);
+// From file
+const resume = new ResumeParser("./files/resume.doc");
+
+
+// From URL
+const resume = new ResumeParser("https://writing.colostate.edu/guides/documents/resume/functionalSample.pdf");
+
+//Convert to JSON Object
+  resume.parseToJSON()
+  .then(data => {
+    console.log('Yay! ', data);
   })
   .catch(error => {
     console.error(error);
   });
 
-// From URL
-ResumeParser
-  .parseResumeUrl('http://www.mysite.com/resume.txt') // url
-  .then(data => {
-    console.log('Yay! ', data);
+//Save to JSON File
+resume.parseToFile()
+  .then(file => {
+    console.log('Yay! ', file);
   })
   .catch(error => {
     console.error(error);
@@ -46,5 +51,4 @@ All 'action' are by building `src/dictionary.js` file. For now it has only basic
 
 ## Contributions
 
-- This project was forked from Perminder Klair's original project [https://www.npmjs.com/package/resume-parser](https://www.npmjs.com/package/resume-parser)
-- Many thanks to [Alexey Lizurchik](https://github.com/likerRr) for this library. [https://github.com/likerRr/code4goal-resume-parser](https://github.com/likerRr/code4goal-resume-parser) 
+- This project was originally forked from Perminder Klair's project [https://www.npmjs.com/package/resume-parser](https://www.npmjs.com/package/resume-parser)
