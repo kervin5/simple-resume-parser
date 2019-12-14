@@ -29,7 +29,7 @@ const resume = new ResumeParser("https://writing.colostate.edu/guides/documents/
   });
 
 //Save to JSON File
-resume.parseToFile()
+resume.parseToFile('converted') //output subdirectory
   .then(file => {
     console.log('Yay! ', file);
   })
