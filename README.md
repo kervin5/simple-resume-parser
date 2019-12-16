@@ -40,9 +40,9 @@ resume.parseToFile('converted') //output subdirectory
 
 At this moment application will work fine, but! By default it supports only `.TXT` and `.HTML` text formats. For better performance you should install at least support of `.PDF` (and `.DOC`). Here is instructions, how to do it from [textract README](https://github.com/dbashford/textract#requirements) file:
 
-- `PDF` extraction requires `pdftotext` be installed, [link](http://www.foolabs.com/xpdf/download.html)
+- `PDF` extraction requires `poppler-utils` be installed, [link](https://poppler.freedesktop.org/)
 - `DOC` extraction requires `catdoc` be installed, [link](http://www.wagner.pp.ru/~vitus/software/catdoc/), unless on OSX in which case textutil (installed by default) is used.
-- `DOCX` extraction requires `unzip` be available (e.g. `sudo apt-get install unzip` for Ubuntu)
+- `DOCX` extraction requires `antiword` be available (e.g. `sudo apt-get install -y antiword` for Ubuntu)
 
 
 ## Extending
