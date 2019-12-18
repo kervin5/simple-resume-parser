@@ -6,13 +6,15 @@ var parser = {
   parseToJSON: function(path, type, cbAfterParse) {
     const objParseBoy = new ParseBoy();
     if (type === "url") {
-      processing.runUrl(path, (preppedFile, error) =>
-        objParseBoy.parseUrl(preppedFile, cbAfterParse)
-      );
+      processing.runUrl(path, (preppedFile, error) => {
+        if (error) throw new Error(error);
+        return objParseBoy.parseUrl(preppedFile, cbAfterParse);
+      });
     } else {
-      processing.runFile(path, (preppedFile, error) =>
-        objParseBoy.parseFile(preppedFile, cbAfterParse)
-      );
+      processing.runFile(path, (preppedFile, error) => {
+        if (error) throw new Error(error);
+        objParseBoy.parseFile(preppedFile, cbAfterParse);
+      });
     }
   },
   parseToFile: function(path, type, savePath, cbAfterParse) {
