@@ -7,13 +7,15 @@ var parser = {
     const objParseBoy = new ParseBoy();
     if (type === "url") {
       processing.runUrl(path, (preppedFile, error) => {
-        if (error) throw new Error(error);
-        return objParseBoy.parseUrl(preppedFile, cbAfterParse);
+        return objParseBoy.parseUrl(preppedFile, parsedResume =>
+          cbAfterParse(parsedResume, error)
+        );
       });
     } else {
       processing.runFile(path, (preppedFile, error) => {
-        if (error) throw new Error(error);
-        objParseBoy.parseFile(preppedFile, cbAfterParse);
+        objParseBoy.parseFile(preppedFile, parsedResume =>
+          cbAfterParse(parsedResume, error)
+        );
       });
     }
   },
