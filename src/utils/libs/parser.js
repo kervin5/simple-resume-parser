@@ -61,7 +61,7 @@ function makeRegExpFromDictionary() {
 makeRegExpFromDictionary();
 
 function parse(PreparedFile, cbReturnResume) {
-  if (reparedFile && !reparedFile.raw) {
+  if (PreparedFile && !PreparedFile.raw) {
     cbReturnResume({ parts: {} }, { error: "Failed to parse" });
     return {};
   }
