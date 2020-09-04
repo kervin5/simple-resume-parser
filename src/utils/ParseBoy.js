@@ -15,7 +15,7 @@ function ParseBoy() {}
  * @param cbGetResume
  */
 ParseBoy.prototype.parseFile = function(PreparedFile, cbGetResume) {
-  logger.trace("I'm working with \"" + PreparedFile.name + '" now');
+  logger.trace("I'm working with \"" + PreparedFile?.name + '" now');
   parser.parse(PreparedFile, cbGetResume);
 };
 
