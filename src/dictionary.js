@@ -34,7 +34,7 @@ module.exports = {
       "social-profiles",
       "social profiles",
     ],
-    awards: ["awards"],
+    awards: ["awards", "Award"],
     honors: ["honors"],
     additional: ["additional"],
     certification: ["certification", "certifications"],
