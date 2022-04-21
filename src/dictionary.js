@@ -7,7 +7,12 @@ module.exports = {
     objective: ["objective", "objectives"],
     summary: ["summary"],
     technology: ["technology", "technologies"],
-    experience: ["work experiences", "experience"],
+    professional_experience: [
+      "work experiences",
+      "experience",
+      "Work Experiences",
+      "Professional Experiences",
+    ],
     education: ["Education Level", "education level", "education"],
     organisational_experience: ["Organisational Experience"],
     skills: [
@@ -151,7 +156,9 @@ module.exports = {
     skype: "skype",
   },
   regular: {
-    name: [/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/um],
+    name: [
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/mu,
+    ],
     email: [/([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})/],
     phone: [/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+(\s*)$/im],
   },
