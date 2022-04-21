@@ -8,7 +8,7 @@ module.exports = {
     summary: ["summary"],
     technology: ["technology", "technologies"],
     experience: ["work experiences", "experience"],
-    education: ["education level", "education"],
+    education: ["Education Level", "education level", "education"],
     organisational_experience: ["Organisational Experience"],
     skills: [
       "Skills, Achievements & Other Experience",
