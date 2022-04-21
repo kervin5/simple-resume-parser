@@ -7,8 +7,8 @@ module.exports = {
     objective: ["objective", "objectives"],
     summary: ["summary"],
     technology: ["technology", "technologies"],
-    experience: ["experience", "work experiences"],
-    education: ["education", "education level"],
+    experience: ["work experiences", "experience"],
+    education: ["education level", "education"],
     organisationa_experience: ["Organisational Experience"],
     skills: ["skills", "Skills & Expertise", "technology", "technologies"],
     languages: ["languages"],
@@ -147,7 +147,7 @@ module.exports = {
   regular: {
     name: [/([A-Z][a-z]*)(\s[A-Z][a-z]*)/],
     email: [/([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})/],
-    phone: [/((?:\+?\d{1,3}[\s-])?\(?\d{2,3}\)?[\s.-]?\d{3}[\s.-]\d{4,5})/],
+    phone: [/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/im],
   },
 };
 
