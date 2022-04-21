@@ -14,7 +14,7 @@ module.exports = {
       "Professional Experiences",
     ],
     education: ["Education Level", "education level", "education"],
-    organisational_experience: ["Organisational Experience"],
+    organisational_experience: ["Organisational Experience", "Organization"],
     skills: [
       "Skills, Achievements & Other Experience",
       "Skills & Expertise",
