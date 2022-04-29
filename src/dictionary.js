@@ -16,6 +16,7 @@ module.exports = {
     education: ["Education Level", "education level", "education"],
     organisational_experience: [
       "Organisational Experience",
+      "Volunteer Experience",
       "Co-curricular Activities",
       "Organization",
     ],
