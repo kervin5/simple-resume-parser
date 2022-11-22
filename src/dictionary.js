@@ -5,7 +5,7 @@ var _ = require("underscore");
 module.exports = {
   titles: {
     objective: ["objective", "objectives"],
-    summary: ["summary"],
+    summary: ["summary", "profile"],
     technology: ["technology", "technologies"],
     professional_experience: [
       "PROFESSIONAL EXPERIENCE",
@@ -13,7 +13,10 @@ module.exports = {
       "Professional Experiences",
       "Work Experiences",
       "work experiences",
+      "WORK EXPERIENCE",
+      "work experience",
       "experience",
+      "employment"
     ],
     education: ["Education Level", "education level", "education"],
     organisational_experience: [
