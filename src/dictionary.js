@@ -16,7 +16,7 @@ module.exports = {
       "WORK EXPERIENCE",
       "work experience",
       "experience",
-      "employment"
+      "employment",
     ],
     education: ["Education Level", "education level", "education"],
     organisational_experience: [
@@ -24,6 +24,8 @@ module.exports = {
       "Volunteer Experience",
       "Co-curricular Activities",
       "Organization",
+      "ACTIVITIES",
+      "activities",
     ],
     skills: [
       "Soft skills",
