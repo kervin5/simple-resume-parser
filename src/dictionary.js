@@ -27,6 +27,7 @@ module.exports = {
       "Organization",
       "ACTIVITIES",
       "activities",
+      "Activities",
     ],
     skills: [
       "Soft skills",
