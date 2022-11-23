@@ -16,6 +16,7 @@ module.exports = {
       "WORK EXPERIENCE",
       "work experience",
       "experience",
+      "Employment",
       "employment",
     ],
     education: ["Education Level", "education level", "education"],
