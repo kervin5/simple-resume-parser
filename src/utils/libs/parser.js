@@ -250,7 +250,7 @@ function parseDictionaryProfiles(row, Resume) {
           expressionHandler(find[0], Resume, profilesWatcher);
         }
       }
-      return !!find;
+      return find && find.length > 0;
     }
   });
 
