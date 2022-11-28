@@ -249,8 +249,9 @@ function parseDictionaryProfiles(row, Resume) {
           profilesWatcher.inProgress++;
           expressionHandler(find[0], Resume, profilesWatcher);
         }
+        return true;
       }
-      return find && find.length > 0;
+      return false;
     }
   });
 
