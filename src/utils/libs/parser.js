@@ -6,23 +6,23 @@ var _ = require("underscore"),
 
 var profilesWatcher = {
   // for change value by reference
-  inProgress: 0
+  inProgress: 0,
 };
 
 module.exports = {
-  parse: parse
+  parse: parse,
 };
 
 function makeRegExpFromDictionary() {
   var regularRules = {
     titles: {},
     profiles: [],
-    inline: {}
+    inline: {},
   };
 
-  _.forEach(dictionary.titles, function(titles, key) {
+  _.forEach(dictionary.titles, function (titles, key) {
     regularRules.titles[key] = [];
-    _.forEach(titles, function(title) {
+    _.forEach(titles, function (title) {
       regularRules.titles[key].push(title.toUpperCase());
       regularRules.titles[key].push(
         title[0].toUpperCase() + title.substr(1, title.length)
@@ -30,7 +30,7 @@ function makeRegExpFromDictionary() {
     });
   });
 
-  _.forEach(dictionary.profiles, function(profile) {
+  _.forEach(dictionary.profiles, function (profile) {
     var profileHandler, profileExpr;
 
     if (_.isArray(profile)) {
@@ -50,7 +50,7 @@ function makeRegExpFromDictionary() {
     }
   });
 
-  _.forEach(dictionary.inline, function(expr, name) {
+  _.forEach(dictionary.inline, function (expr, name) {
     regularRules.inline[name] = expr + ":?[\\s]*(.*)";
   });
 
@@ -89,7 +89,7 @@ function parse(PreparedFile, cbReturnResume) {
   if (_.isFunction(cbReturnResume)) {
     // wait until download and handle internet profile
     var i = 0;
-    var checkTimer = setInterval(function() {
+    var checkTimer = setInterval(function () {
       i++;
       /**
        * FIXME:profilesWatcher.inProgress not going down to 0 for txt files
@@ -140,7 +140,7 @@ function countWords(str) {
 function parseDictionaryInline(Resume, row) {
   var find;
 
-  _.forEach(dictionary.inline, function(expression, key) {
+  _.forEach(dictionary.inline, function (expression, key) {
     find = new RegExp(expression).exec(row);
     if (find) {
       Resume.addKey(key.toLowerCase(), find[1]);
@@ -157,8 +157,8 @@ function parseDictionaryRegular(data, Resume) {
   var regularDictionary = dictionary.regular,
     find;
 
-  _.forEach(regularDictionary, function(expressions, key) {
-    _.forEach(expressions, function(expression) {
+  _.forEach(regularDictionary, function (expressions, key) {
+    _.forEach(expressions, function (expression) {
       find = new RegExp(expression).exec(data);
       if (find) {
         Resume.addKey(key.toLowerCase(), find[0]);
@@ -181,11 +181,11 @@ function parseDictionaryTitles(Resume, rows, rowIdx) {
     isRuleFound,
     result;
 
-  _.forEach(dictionary.titles, function(expressions, key) {
+  _.forEach(dictionary.titles, function (expressions, key) {
     expressions = expressions || [];
     // means, that titled row is less than 5 words
     if (countWords(row) <= 5) {
-      _.forEach(expressions, function(expression) {
+      _.forEach(expressions, function (expression) {
         ruleExpression = new RegExp(expression);
         isRuleFound = ruleExpression.test(row);
 
@@ -218,23 +218,39 @@ function parseDictionaryProfiles(row, Resume) {
     find,
     modifiedRow = row;
 
-  _.forEach(regularDictionary, function(expression) {
+  _.forEach(regularDictionary, function (expression) {
     var expressionHandler;
+
+    let current_expression = expression; // store current expression, assuming it is a single string
+    let has_more_than_one_regex = false; // default to false
 
     if (_.isArray(expression)) {
       if (_.isFunction(expression[1])) {
         expressionHandler = expression[1];
+      } else if (_.isRegExp(expression[1])) {
+        has_more_than_one_regex = true; // if expression is array and has regex as second element, then it is more than 1 regex
       }
-      expression = expression[0];
+      current_expression = expression[0];
     }
-    find = new RegExp(expression).exec(row);
-    if (find) {
-      Resume.addKey("profiles", find[0] + "\n");
-      modifiedRow = row.replace(find[0], "");
-      if (_.isFunction(expressionHandler)) {
-        profilesWatcher.inProgress++;
-        expressionHandler(find[0], Resume, profilesWatcher);
+
+    const result = findFunction(current_expression);
+    // If result is false and there's more than 1 regex, then try the next one
+    if (!result && has_more_than_one_regex) {
+      current_expression = expression[1];
+      findFunction(current_expression);
+    }
+
+    function findFunction() {
+      find = new RegExp(current_expression).exec(row);
+      if (find) {
+        Resume.addKey("profiles", find[0] + "\n");
+        modifiedRow = row.replace(find[0], "");
+        if (_.isFunction(expressionHandler)) {
+          profilesWatcher.inProgress++;
+          expressionHandler(find[0], Resume, profilesWatcher);
+        }
       }
+      return !!find;
     }
   });
 
