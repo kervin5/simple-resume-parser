@@ -221,37 +221,20 @@ function parseDictionaryProfiles(row, Resume) {
   _.forEach(regularDictionary, function (expression) {
     var expressionHandler;
 
-    let current_expression = expression; // store current expression, assuming it is a single string
-    let has_more_than_one_regex = false; // default to false
-
     if (_.isArray(expression)) {
       if (_.isFunction(expression[1])) {
         expressionHandler = expression[1];
-      } else if (_.isRegExp(expression[1])) {
-        has_more_than_one_regex = true; // if expression is array and has regex as second element, then it is more than 1 regex
       }
-      current_expression = expression[0];
+      expression = expression[0];
     }
-
-    const result = executeFind();
-    // If result is false and there's more than 1 regex, then try the next one
-    if (!result && has_more_than_one_regex) {
-      current_expression = expression[1];
-      executeFind();
-    }
-
-    function executeFind() {
-      find = new RegExp(current_expression).exec(row);
-      if (find) {
-        Resume.addKey("profiles", find[0] + "\n");
-        modifiedRow = row.replace(find[0], "");
-        if (_.isFunction(expressionHandler)) {
-          profilesWatcher.inProgress++;
-          expressionHandler(find[0], Resume, profilesWatcher);
-        }
-        return true;
+    find = new RegExp(expression).exec(row);
+    if (find) {
+      Resume.addKey("profiles", find[0] + "\n");
+      modifiedRow = row.replace(find[0], "");
+      if (_.isFunction(expressionHandler)) {
+        profilesWatcher.inProgress++;
+        expressionHandler(find[0], Resume, profilesWatcher);
       }
-      return false;
     }
   });
 
