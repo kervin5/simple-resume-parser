@@ -233,14 +233,14 @@ function parseDictionaryProfiles(row, Resume) {
       current_expression = expression[0];
     }
 
-    const result = findFunction(current_expression);
+    const result = executeFind();
     // If result is false and there's more than 1 regex, then try the next one
     if (!result && has_more_than_one_regex) {
       current_expression = expression[1];
-      findFunction(current_expression);
+      executeFind();
     }
 
-    function findFunction() {
+    function executeFind() {
       find = new RegExp(current_expression).exec(row);
       if (find) {
         Resume.addKey("profiles", find[0] + "\n");
