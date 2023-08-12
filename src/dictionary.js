@@ -1,4 +1,4 @@
-var request = require("request");
+var axios = require("axios");
 var cheerio = require("cheerio");
 var _ = require("underscore");
 
@@ -184,11 +184,12 @@ module.exports = {
 
 // helper method
 function download(url, callback) {
-  request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      callback(body);
-    } else {
+  axios
+    .get(url)
+    .then(function (response) {
+      callback(response?.data);
+    })
+    .catch(function (error) {
       callback(null, error);
-    }
-  });
+    });
 }
